@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Patient Testimonials - Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section>
+<h2>Patient Testimonials</h2>
+<p>See what our satisfied patients have to say about their experience with Glow Dental Hospital.</p>
+<div class="testimonials">
+<div class="testimonial">
+<p>"Excellent service! Dr. Rajesh treated my root canal painlessly. I was so scared before but the entire experience was smooth and comfortable. Highly recommended!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Sharma (Patient)</strong></p>
+</div>
+<div class="testimonial">
+<p>"Very professional and caring team. My teeth whitening results were amazing! I got the brightest smile I've always wanted. Thank you Glow Dental!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Priya M (Patient)</strong></p>
+</div>
+<div class="testimonial">
+<p>"Best dental hospital in Bangalore. Clean, modern facility with friendly staff. Dr. Anil and his team made me feel at ease. Worth every penny!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Ravi K (Patient)</strong></p>
+</div>
+<div class="testimonial">
+<p>"My daughter loved her visit to Glow Dental! Dr. Sneha is amazing with kids. She made the dental experience fun and not scary. We're regular patients now!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Mrs. Gupta (Parent)</strong></p>
+</div>
+<div class="testimonial">
+<p>"I got dental implants done here and the results are incredible. Looks and feels completely natural. The doctors are highly skilled and professional."</p>
+<p><strong>⭐⭐⭐⭐⭐ - Arjun Singh (Patient)</strong></p>
+</div>
+<div class="testimonial">
+<p>"Got my braces fixed at Glow Dental. The progress is amazing and the entire team is supportive. Transparent pricing with no hidden charges. Recommended!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Neha Desai (Patient)</strong></p>
+</div>
+<div class="testimonial">
+<p>"Emergency root canal treatment at 11 PM! They didn't hesitate to help. Amazing 24/7 service. This is the kind of dedication that makes them the best!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Rajesh Patel (Patient)</strong></p>
+</div>
+<div class="testimonial">
+<p>"My gum disease is completely under control now thanks to Dr. Vikram. His treatment plan was detailed and the results speak for themselves. Thank you!"</p>
+<p><strong>⭐⭐⭐⭐⭐ - Dr. Mohan (Referred Patient)</strong></p>
+</div>
+</div>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+</body>
+</html>
+<script>
+function toggleMenu() {
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  navbar.classList.toggle('show');
+  hamburger.classList.toggle('active');
+}
+
+Document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navbar').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+</script>

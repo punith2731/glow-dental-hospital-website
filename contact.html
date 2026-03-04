@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Contact Us - Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section class="contact-hero">
+<div class="contact-hero-content">
+<h1>📞 Get In Touch</h1>
+<p>We're here to help you with all your dental needs</p>
+</div>
+</section>
+<section class="contact-main-section">
+<h2>📍 Visit Us or Reach Out</h2>
+<p class="contact-intro">Our friendly team is ready to assist you. Visit us, call, or drop by anytime during our working hours.</p>
+<div class="contact-info-grid">
+<div class="info-box">
+<h3>📍 Location</h3>
+<p><strong>Glow Dental Hospital</strong></p>
+<p>123 Dental Street, Vidyaranyapura</p>
+<p>Bangalore 560097, India</p>
+</div>
+<div class="contact-card">
+<div class="contact-icon">📞</div>
+<h3>Phone</h3>
+<p><strong>General:</strong> +91-80-4321-5678</p>
+<p><strong>Emergency:</strong> +91-98765-43210</p>
+<p><strong>WhatsApp:</strong> +91-98765-43210</p>
+</div>
+<div class="contact-card">
+<div class="contact-icon">📧</div>
+<h3>Email</h3>
+<p><strong>General Inquiry:</strong> info@glowdental.com</p>
+<p><strong>Appointments:</strong> appointments@glowdental.com</p>
+<p><strong>Emergency:</strong> emergency@glowdental.com</p>
+</div>
+<div class="contact-card">
+<div class="contact-icon">⏰</div>
+<h3>Working Hours</h3>
+<p><strong>Monday - Friday:</strong> 9:00 AM - 8:00 PM</p>
+<p><strong>Saturday:</strong> 9:00 AM - 6:00 PM</p>
+<p><strong>Sunday:</strong> 10:00 AM - 4:00 PM</p>
+<p><strong>Emergency:</strong> 24/7 Available</p>
+</div>
+</div>
+</section>
+<section class="map-section">
+<h2>🗺️ Find Us on Map</h2>
+<div class="map-container">
+<iframe src="https://www.google.com/maps?q=Glow+Dental+Hospital+Vidyaranyapura+Bangalore&output=embed"
+width="100%" height="450" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy"></iframe>
+</div>
+</section>
+<section class="social-section">
+<h2>🌟 Connect With Us</h2>
+<p class="social-intro">Follow us on social media for dental tips, updates, and special offers</p>
+<div class="social-links-grid">
+<a href="https://facebook.com" target="_blank" class="social-card facebook">
+<div class="social-icon">📘</div>
+<span>Facebook</span>
+</a>
+<a href="https://instagram.com" target="_blank" class="social-card instagram">
+<div class="social-icon">📷</div>
+<span>Instagram</span>
+</a>
+<a href="https://twitter.com" target="_blank" class="social-card twitter">
+<div class="social-icon">🐦</div>
+<span>Twitter</span>
+</a>
+<a href="https://youtube.com" target="_blank" class="social-card youtube">
+<div class="social-icon">📹</div>
+<span>YouTube</span>
+</a>
+</div>
+</section>
+<section class="cta-section">
+<div class="cta-content">
+<h2>🎉 Ready to Schedule Your Visit? 🎉</h2>
+<p>Book your appointment today and experience exceptional dental care</p>
+<button onclick="location.href='appointment.html'" class="cta-button">Book Appointment Now</button>
+</div>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+</body>
+</html>
+<script>
+function toggleMenu() {
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  navbar.classList.toggle('show');
+  hamburger.classList.toggle('active');
+}
+
+document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navbar').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+</script>

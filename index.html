@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<script defer src="js/app.js"></script>
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section class="hero">
+<div class="hero-content">
+<h2>Your Smile, Our Responsibility</h2>
+<p class="hero-subtitle">✨ Experience Painless Dental Care with Advanced Technology ✨</p>
+<div class="hero-buttons">
+<button onclick="callNow()" class="btn-primary">📞 Call Now</button>
+<button onclick="whatsapp()" class="btn-secondary">💬 WhatsApp Chat</button>
+</div>
+</div>
+</section>
+<section class="features-section">
+<h2>✨ Why Choose Glow Dental Hospital? ✨</h2>
+<p class="section-subtitle">Discover what makes us the preferred choice for dental care</p>
+<div class="features-grid">
+<div class="feature-box">
+<div class="feature-icon">🏥</div>
+<h3>Modern Facility</h3>
+<p>State-of-the-art equipment and advanced technology for best results</p>
+</div>
+<div class="feature-box">
+<div class="feature-icon">👨‍⚕️</div>
+<h3>Expert Doctors</h3>
+<p>15+ years of experience with specialized dental professionals</p>
+</div>
+<div class="feature-box">
+<div class="feature-icon">⚡</div>
+<h3>Painless Treatment</h3>
+<p>Gentle procedures ensuring maximum comfort for every patient</p>
+</div>
+<div class="feature-box">
+<div class="feature-icon">💰</div>
+<h3>Affordable Pricing</h3>
+<p>Transparent pricing with no hidden charges guaranteed</p>
+</div>
+<div class="feature-box">
+<div class="feature-icon">🎯</div>
+<h3>Quick Results</h3>
+<p>Efficient treatment plans with proven success rates</p>
+</div>
+<div class="feature-box">
+<div class="feature-icon">🛡️</div>
+<h3>100% Safe</h3>
+<p>Strict sterilization protocols and highest hygiene standards</p>
+</div>
+</section>
+<section class="stats-section">
+<div class="stat-box">
+<h3>10,000+</h3>
+<p>😊 Happy Patients</p>
+</div>
+<div class="stat-box">
+<h3>15+</h3>
+<p>🏆 Years Experience</p>
+</div>
+<div class="stat-box">
+<h3>50+</h3>
+<p>👨‍⚕️ Expert Team</p>
+</div>
+<div class="stat-box">
+<h3>5.0⭐</h3>
+<p>💯 Customer Rating</p>
+</div>
+</section>
+<section class="cta-section">
+<div class="cta-content">
+<h2>🎉 Ready for Your Best Smile? 🎉</h2>
+<p>Book your appointment today and experience world-class dental care</p>
+<button onclick="location.href='appointment.html'" class="cta-button">Book Appointment Now</button>
+</div>
+</section>
+<section class="quotes-section">
+<h2>💬 Words from Our Patients</h2>
+<div class="quotes-container">
+<div class="quote-box moving-quote active">
+<p>"A beautiful smile is the best accessory!"</p>
+<p><strong>- Transform Your Smile Today</strong></p>
+</div>
+<div class="quote-box moving-quote">
+<p>"Healthy teeth, happy life. We care for both!"</p>
+<p><strong>- Your Trusted Dental Partner</strong></p>
+</div>
+<div class="quote-box moving-quote">
+<p>"Pain-free dentistry is not a dream, it's our promise!"</p>
+<p><strong>- Experience Our Excellence</strong></p>
+</div>
+<div class="quote-box moving-quote">
+<p>"Smile with confidence. Let us make it perfect!"</p>
+<p><strong>- Advanced Care, Caring Touch</strong></p>
+</div>
+</div>
+<div class="quote-indicators">
+<span class="indicator active" onclick="currentQuote(0)"></span>
+<span class="indicator" onclick="currentQuote(1)"></span>
+<span class="indicator" onclick="currentQuote(2)"></span>
+<span class="indicator" onclick="currentQuote(3)"></span>
+</div>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+<script>
+let currentQuoteIndex = 0;
+const quotes = document.querySelectorAll('.moving-quote');
+const indicators = document.querySelectorAll('.indicator');
+
+function showQuote(index) {
+  quotes.forEach(q => q.classList.remove('active'));
+  indicators.forEach(ind => ind.classList.remove('active'));
+  quotes[index].classList.add('active');
+  indicators[index].classList.add('active');
+}
+
+function nextQuote() {
+  currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+  showQuote(currentQuoteIndex);
+}
+
+function currentQuote(index) {
+  currentQuoteIndex = index;
+  showQuote(currentQuoteIndex);
+}
+
+// Auto-rotate quotes every 5 seconds
+setInterval(nextQuote, 5000);
+
+function toggleMenu() {
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  navbar.classList.toggle('show');
+  hamburger.classList.toggle('active');
+}
+
+// Close menu when a link is clicked
+document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navbar').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+</script>
+</body>
+</html>

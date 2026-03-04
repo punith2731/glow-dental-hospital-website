@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>About Us - Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section class="about-hero">
+<div class="about-hero-content">
+<h1>✨ About Glow Dental Hospital ✨</h1>
+<p>Your trusted partner in dental health for over 15 years</p>
+</div>
+</section>
+<section class="about-story">
+<div class="story-content">
+<h2>🏥 Our Story</h2>
+<p class="lead-text">Glow Dental Hospital was founded with a simple yet powerful vision: to make world-class dental care accessible, affordable, and painless for everyone. Located in the heart of Vidyaranyapura, Bangalore, we have been transforming smiles and lives for over 15 years.</p>
+<p>What started as a small clinic has grown into a comprehensive dental hospital, serving thousands of happy patients with state-of-the-art technology and compassionate care. Our success is built on trust, expertise, and an unwavering commitment to patient satisfaction.</p>
+</div>
+</section>
+<section class="mission-vision-section">
+<div class="mv-container">
+<div class="mv-card mission-card">
+<div class="mv-icon">🎯</div>
+<h3>Our Mission</h3>
+<p>To provide world-class dental care using the latest technology while maintaining affordability and accessibility for all patients. We strive to make every visit comfortable, efficient, and results-driven.</p>
+</div>
+<div class="mv-card vision-card">
+<div class="mv-icon">🔭</div>
+<h3>Our Vision</h3>
+<p>To be recognized as the leading dental hospital in Bangalore, known for our innovative treatments, compassionate care, and exceptional patient satisfaction. We aim to set new standards in dental healthcare.</p>
+</div>
+</div>
+</section>
+<section class="achievements-section">
+<h2>🏆 Our Achievements</h2>
+<div class="achievements-grid">
+<div class="achievement-item">
+<div class="achievement-number">15+</div>
+<div class="achievement-label">Years of Excellence</div>
+</div>
+<div class="achievement-item">
+<div class="achievement-number">10,000+</div>
+<div class="achievement-label">Happy Patients</div>
+</div>
+<div class="achievement-item">
+<div class="achievement-number">50+</div>
+<div class="achievement-label">Expert Team</div>
+</div>
+<div class="achievement-item">
+<div class="achievement-number">5.0⭐</div>
+<div class="achievement-label">Customer Rating</div>
+</div>
+</div>
+</section>
+<section class="values-section">
+<h2>💖 Our Core Values</h2>
+<div class="values-grid">
+<div class="value-card">
+<div class="value-icon">✨</div>
+<h3>Excellence</h3>
+<p>We pursue the highest standards in everything we do, from technology to patient care.</p>
+</div>
+<div class="value-card">
+<div class="value-icon">🤝</div>
+<h3>Compassion</h3>
+<p>Every patient is treated with empathy, respect, and personalized attention.</p>
+</div>
+<div class="value-card">
+<div class="value-icon">🔒</div>
+<h3>Integrity</h3>
+<p>Transparent pricing, honest advice, and ethical practices in all our services.</p>
+</div>
+<div class="value-card">
+<div class="value-icon">💡</div>
+<h3>Innovation</h3>
+<p>Continuously adopting latest technologies and techniques for better results.</p>
+</div>
+</div>
+</section>
+<section class="why-choose-section">
+<h2>⭐ Why Choose Glow Dental Hospital?</h2>
+<div class="why-choose-grid">
+<div class="why-item">
+<div class="why-icon">🏥</div>
+<h3>State-of-the-art Facilities</h3>
+<p>Modern equipment and advanced technology for accurate diagnosis and effective treatment.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">👨‍⚕️</div>
+<h3>Expert Professionals</h3>
+<p>Highly qualified and certified dental specialists with years of experience.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">💉</div>
+<h3>Pain-Free Treatment</h3>
+<p>Advanced pain management protocols ensuring comfortable dental procedures.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">💳</div>
+<h3>Transparent Pricing</h3>
+<p>Clear cost breakdown with no hidden charges or surprises.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">🧼</div>
+<h3>Hygienic Environment</h3>
+<p>International sterilization standards and clean, comfortable facilities.</p>
+</div>
+<div class="why-item">
+<div class="why-icon">⏰</div>
+<h3>24/7 Emergency Care</h3>
+<p>Round-the-clock emergency dental services for urgent situations.</p>
+</div>
+</div>
+</section>
+<section class="cta-section">
+<div class="cta-content">
+<h2>🎉 Experience the Glow Difference! 🎉</h2>
+<p>Join thousands of satisfied patients who trust us with their dental health</p>
+<button onclick="location.href='appointment.html'" class="cta-button">Book Your Appointment</button>
+</div>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+</body>
+</html>
+<script>
+function toggleMenu() {
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  navbar.classList.toggle('show');
+  hamburger.classList.toggle('active');
+}
+
+document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navbar').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+</script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Team - Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section>
+<h2>Our Expert Team</h2>
+<p>Meet our team of experienced dental professionals dedicated to your oral health.</p>
+<div class="cards">
+<div class="card doctor-card">
+<h3>Dr. Rajesh Kumar</h3>
+<p>Root Canal Specialist</p>
+<p>20+ years experience | BDS, Implantology Certification</p>
+<p>Specializes in endodontics and advanced root canal treatments. Known for painless procedures.</p>
+</div>
+<div class="card doctor-card">
+<h3>Dr. Priya Singh</h3>
+<p>Orthodontist</p>
+<p>15+ years experience | MDS Orthodontics</p>
+<p>Expert in teeth alignment and braces. Specializes in modern clear aligner technology.</p>
+</div>
+<div class="card doctor-card">
+<h3>Dr. Anil Patel</h3>
+<p>Prosthodontist</p>
+<p>18+ years experience | Cosmetic Dentistry Expert</p>
+<p>Masters in dental prosthetics. Specializes in cosmetic dentistry and smile makeovers.</p>
+</div>
+<div class="card doctor-card">
+<h3>Dr. Sneha Sharma</h3>
+<p>Pediatric Dentist</p>
+<p>12+ years experience | Child Psychology Training</p>
+<p>Specialized in treating children with compassion. Creates a fun and safe dental environment.</p>
+</div>
+<div class="card doctor-card">
+<h3>Dr. Vikram Desai</h3>
+<p>Periodontics Specialist</p>
+<p>16+ years experience | Gum Disease Expert</p>
+<p>Advanced gum disease treatment and prevention. State-of-the-art periodontal procedures.</p>
+</div>
+<div class="card doctor-card">
+<h3>Dr. Anjali Verma</h3>
+<p>General Dentist</p>
+<p>10+ years experience | BDS, Preventive Dentistry</p>
+<p>Expert in preventive care and general dental procedures. Patient education focused.</p>
+</div>
+</div>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+</body>
+</html>
+<script>
+function toggleMenu() {
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  navbar.classList.toggle('show');
+  hamburger.classList.toggle('active');
+}
+
+Document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navbar').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+</script>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Book Appointment - Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script defer src="firebase-config.js"></script>
+<script defer src="firebase.js"></script>
+<script defer src="js/app.js"></script>
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section class="appointment-hero">
+<div class="appointment-hero-content">
+<h1>📅 Book Your Appointment</h1>
+<p>Schedule your visit with our expert dental team</p>
+</div>
+</section>
+<section class="appointment-form-section">
+<div class="appointment-intro">
+<h2>🦷 Schedule Your Visit</h2>
+<p>Fill out the form below and we'll confirm your appointment within 24 hours. For urgent care, please call us directly.</p>
+<div class="appointment-benefits">
+<div class="benefit-badge">✓ Quick Confirmation</div>
+<div class="benefit-badge">✓ Expert Care</div>
+<div class="benefit-badge">✓ Flexible Timing</div>
+</div>
+</div>
+<form id="appointmentForm" class="appointment-form-enhanced">
+<input type="text" id="name" placeholder="Patient Name" required>
+<input type="email" id="email" placeholder="Email Address" required>
+<input type="tel" id="phone" placeholder="Phone Number" required>
+<input type="date" id="date" required>
+<input type="time" id="time" required>
+<textarea id="message" placeholder="Describe your dental problem (optional)" rows="4"></textarea>
+<label class="checkbox-label">
+<input type="checkbox" required>
+<span>I agree to the terms and conditions</span>
+</label>
+<button type="submit">Book Appointment</button>
+</form>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+</body>
+</html>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const appointmentForm = document.getElementById('appointmentForm');
+
+  if (!appointmentForm) {
+    return;
+  }
+
+  appointmentForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+
+    submitButton.textContent = 'Submitting...';
+    submitButton.disabled = true;
+
+    const appointmentData = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      date: document.getElementById('date').value,
+      time: document.getElementById('time').value,
+      message: document.getElementById('message').value.trim(),
+      submittedAt: new Date().toISOString()
+    };
+
+    try {
+      if (!window.firebaseBackend || !window.firebaseBackend.isConfigured) {
+        throw new Error('Firebase not configured.');
+      }
+
+      await window.firebaseBackend.saveAppointment(appointmentData);
+      alert('Appointment booked successfully! We will contact you soon.');
+      this.reset();
+    } catch (error) {
+      console.error('Appointment submission failed:', error);
+      alert('Unable to submit appointment right now. Please try again.');
+    } finally {
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+    }
+  });
+});
+</script>

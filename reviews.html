@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reviews - Glow Dental Hospital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script defer src="firebase-config.js"></script>
+<script defer src="firebase.js"></script>
+</head>
+<body>
+<header>
+<h1>Glow Dental Hospital</h1>
+<p>⭐ 5.0 Rating | Root Canal Specialists</p>
+</header>
+<nav id="navbar" class="navbar">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="reviews.html">Reviews</a>
+<a href="appointment.html">Appointment</a>
+<a href="contact.html">Contact</a>
+</nav>
+<button class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</button>
+<section class="reviews-hero">
+<div class="reviews-hero-content">
+<h1>⭐ Patient Reviews ⭐</h1>
+<p>Your feedback helps us serve you better</p>
+</div>
+</section>
+<section class="review-form-section">
+<div class="form-intro">
+<h2>💬 Share Your Experience</h2>
+<p>We value your feedback! Tell us about your visit and help others make informed decisions.</p>
+</div>
+<form id="reviewForm" class="review-form-enhanced">
+<div class="form-group">
+<label>👤 Your Name</label>
+<input type="text" id="reviewName" placeholder="Enter your name" required>
+</div>
+<div class="form-group">
+<label>📧 Email (Optional)</label>
+<input type="email" id="reviewEmail" placeholder="your.email@example.com">
+</div>
+<div class="rating-input">
+<label>⭐ Rate Your Experience:</label>
+<div class="star-rating">
+<input type="radio" name="rating" id="star5" value="5" required>
+<label for="star5" title="5 stars">★</label>
+<input type="radio" name="rating" id="star4" value="4">
+<label for="star4" title="4 stars">★</label>
+<input type="radio" name="rating" id="star3" value="3">
+<label for="star3" title="3 stars">★</label>
+<input type="radio" name="rating" id="star2" value="2">
+<label for="star2" title="2 stars">★</label>
+<input type="radio" name="rating" id="star1" value="1">
+<label for="star1" title="1 star">★</label>
+</div>
+</div>
+<textarea id="reviewText" placeholder="Write your review here..." rows="5" required></textarea>
+<button type="submit">Submit Review</button>
+</form>
+</section>
+<section class="reviews-display-section">
+<h2>💙 What Our Patients Say</h2>
+<p id="reviewCount" class="review-count-badge">0 reviews</p>
+<div id="reviewsList" class="reviews-list-enhanced">
+<!-- Reviews will be displayed here -->
+</div>
+</section>
+<footer>
+<p>© 2025 Glow Dental Hospital</p>
+</footer>
+</body>
+</html>
+<script>
+function toggleMenu() {
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  navbar.classList.toggle('show');
+  hamburger.classList.toggle('active');
+}
+
+document.querySelectorAll('#navbar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navbar').classList.remove('show');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+
+function formatReviewDate(createdAt) {
+  const date = createdAt ? new Date(createdAt) : new Date();
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function renderReviews(reviews) {
+  const reviewsList = document.getElementById('reviewsList');
+  const reviewCount = document.getElementById('reviewCount');
+
+  reviewCount.textContent = `${reviews.length} review${reviews.length !== 1 ? 's' : ''}`;
+
+  if (reviews.length === 0) {
+    reviewsList.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to leave a review!</p>';
+    return;
+  }
+
+  reviewsList.innerHTML = reviews.map(review => `
+    <div class="review-item">
+      <div class="review-header">
+        <div>
+          <h3>${review.name}</h3>
+          <p class="review-date">${formatReviewDate(review.createdAt || review.submittedAt)}</p>
+        </div>
+        <div class="review-rating">${'⭐'.repeat(review.rating)}</div>
+      </div>
+      <p class="review-text">${review.text}</p>
+    </div>
+  `).join('');
+}
+
+function startRealtimeReviews() {
+  const reviewsList = document.getElementById('reviewsList');
+  const reviewCount = document.getElementById('reviewCount');
+
+  if (!window.firebaseBackend || !window.firebaseBackend.isConfigured) {
+    reviewCount.textContent = '0 reviews';
+    reviewsList.innerHTML = '<p class="no-reviews">Firebase is not configured yet. Add your Firebase keys in <code>firebase.js</code>.</p>';
+    return;
+  }
+
+  window.firebaseBackend.subscribeReviews(
+    function (reviews) {
+      renderReviews(reviews);
+    },
+    function (error) {
+      console.error('Realtime review sync failed:', error);
+      reviewsList.innerHTML = '<p class="no-reviews">Unable to sync reviews right now. Please try again later.</p>';
+    }
+  );
+}
+
+// Submit review
+document.getElementById('reviewForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  if (!window.firebaseBackend || !window.firebaseBackend.isConfigured) {
+    alert('Firebase is not configured. Please update firebase.js first.');
+    return;
+  }
+  
+  const name = document.getElementById('reviewName').value;
+  const email = document.getElementById('reviewEmail').value;
+  const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+  const text = document.getElementById('reviewText').value;
+  
+  const review = {
+    name: name,
+    email: email,
+    rating: rating,
+    text: text,
+    submittedAt: new Date().toISOString()
+  };
+
+  const submitButton = this.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Submitting...';
+  submitButton.disabled = true;
+
+  try {
+    await window.firebaseBackend.saveReview(review);
+    this.reset();
+    alert('Thank you for your review! Your feedback has been submitted successfully.');
+    document.getElementById('reviewsList').scrollIntoView({ behavior: 'smooth' });
+  } catch (error) {
+    console.error('Review submission failed:', error);
+    alert('Unable to submit your review at the moment. Please try again.');
+  } finally {
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
+  }
+});
+
+// Load reviews on page load
+document.addEventListener('DOMContentLoaded', startRealtimeReviews);
+</script>
