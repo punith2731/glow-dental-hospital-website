@@ -29,10 +29,34 @@
 		console.error("Firebase is not configured. Add real values in firebase-config.js or firebase.js.");
 	}
 
-	const database = hasValidConfig ? firebase.database() : null;
+	const database = hasValidConfig && typeof firebase.database === "function" ? firebase.database() : null;
+	const functions = hasValidConfig && typeof firebase.functions === "function" ? firebase.app().functions("asia-south1") : null;
+
+	function callFunction(name, data) {
+		if (!functions) {
+			return Promise.reject(new Error("Secure booking service is not configured."));
+		}
+		return functions.httpsCallable(name)(data).then(function (result) {
+			return result.data;
+		});
+	}
 
 	window.firebaseBackend = {
-		isConfigured: !!database,
+		isConfigured: !!(database || functions),
+
+		getUnavailableSlots: function (date) {
+			return callFunction("getUnavailableSlots", { date: date }).then(function (result) {
+				return result.slots || [];
+			});
+		},
+
+		createAppointmentPayment: function (data) {
+			return callFunction("createAppointmentPayment", data);
+		},
+
+		verifyRazorpayPayment: function (data) {
+			return callFunction("verifyRazorpayPayment", data);
+		},
 
 		saveAppointment: function (appointmentData) {
 			if (!database) {

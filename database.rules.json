@@ -1,0 +1,16 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "reviews": {
+      ".read": true,
+      "$reviewId": {
+        ".write": "!data.exists()",
+        ".validate": "newData.hasChildren(['name', 'rating', 'text']) && newData.child('name').isString() && newData.child('name').val().length <= 80 && newData.child('text').isString() && newData.child('text').val().length <= 2000 && newData.child('rating').isNumber() && newData.child('rating').val() >= 1 && newData.child('rating').val() <= 5"
+      }
+    },
+    "appointments": { ".read": false, ".write": false },
+    "appointmentSlots": { ".read": false, ".write": false },
+    "appointmentNotifications": { ".read": false, ".write": false }
+  }
+}
