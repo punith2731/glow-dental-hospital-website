@@ -2,6 +2,7 @@
   "use strict";
 
   const SLOT_MINUTES = 30;
+  let services = {};
   const HOURS = {
     weekday: [9, 20],
     saturday: [9, 18],
@@ -36,17 +37,27 @@
 
   function buildSlots(dateString, unavailable) {
     const select = document.getElementById("time");
+    const service = services[document.getElementById("service").value] || { duration: 30 };
     const [start, end] = getHours(dateString);
+    let availableCount = 0;
     select.innerHTML = '<option value="">Select an available time</option>';
-    for (let minutes = start * 60; minutes < end * 60; minutes += SLOT_MINUTES) {
+    for (let minutes = start * 60; minutes + service.duration <= end * 60; minutes += SLOT_MINUTES) {
       const value = String(Math.floor(minutes / 60)).padStart(2, "0") + ":" + String(minutes % 60).padStart(2, "0");
+      let blocked = false;
+      for (let offset = 0; offset < service.duration; offset += SLOT_MINUTES) {
+        const check = minutes + offset;
+        const checkValue = String(Math.floor(check / 60)).padStart(2, "0") + ":" + String(check % 60).padStart(2, "0");
+        if (unavailable.includes(checkValue)) blocked = true;
+      }
       const option = document.createElement("option");
       option.value = value;
-      option.textContent = formatTime(value) + (unavailable.includes(value) ? " — unavailable" : "");
-      option.disabled = unavailable.includes(value);
+      option.textContent = formatTime(value) + (blocked ? " — unavailable" : "");
+      option.disabled = blocked;
+      if (!blocked) availableCount += 1;
       select.appendChild(option);
     }
     select.disabled = false;
+    document.getElementById("waitlistBox").hidden = availableCount > 0;
   }
 
   function collectData() {
@@ -54,6 +65,7 @@
       name: document.getElementById("name").value.trim(),
       email: document.getElementById("email").value.trim(),
       phone: document.getElementById("phone").value.trim(),
+      serviceId: document.getElementById("service").value,
       date: document.getElementById("date").value,
       time: document.getElementById("time").value,
       message: document.getElementById("message").value.trim()
@@ -125,11 +137,20 @@
     if (!form) return;
 
     const dateInput = document.getElementById("date");
+    const serviceInput = document.getElementById("service");
     const continueButton = document.getElementById("continueButton");
     const payButton = document.getElementById("payButton");
     const todayParts = new Intl.DateTimeFormat("en", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date());
     const todayMap = Object.fromEntries(todayParts.map(function (part) { return [part.type, part.value]; }));
     dateInput.min = todayMap.year + "-" + todayMap.month + "-" + todayMap.day;
+
+    if (window.firebase && typeof firebase.auth === "function") {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) return;
+        if (!document.getElementById("email").value) document.getElementById("email").value = user.email || "";
+        if (!document.getElementById("name").value) document.getElementById("name").value = user.displayName || "";
+      });
+    }
 
     const params = new URLSearchParams(window.location.search);
     if (params.get("payment") === "success") {
@@ -139,8 +160,25 @@
       showNotice("Payment was cancelled. No appointment was confirmed; you may try again.", "warning");
     }
 
+    window.firebaseBackend.getBookingCatalog().then(function (catalog) {
+      serviceInput.innerHTML = '<option value="">Choose a service</option>';
+      catalog.services.forEach(function (service) {
+        services[service.id] = service;
+        const option = document.createElement("option");
+        option.value = service.id;
+        option.textContent = service.name + " (" + service.duration + " min)";
+        serviceInput.appendChild(option);
+      });
+    }).catch(function () {
+      serviceInput.innerHTML = '<option value="consultation">Dental Consultation (30 min)</option>';
+      services.consultation = { id: "consultation", name: "Dental Consultation", duration: 30 };
+    });
+
     dateInput.addEventListener("change", function () {
-      if (this.value) loadAvailability(this.value);
+      if (this.value && serviceInput.value) loadAvailability(this.value);
+    });
+    serviceInput.addEventListener("change", function () {
+      if (dateInput.value && this.value) loadAvailability(dateInput.value);
     });
 
     continueButton.addEventListener("click", function () {
@@ -150,11 +188,27 @@
       }
       const data = collectData();
       document.getElementById("summaryName").textContent = data.name;
+      document.getElementById("summaryService").textContent = services[data.serviceId] ? services[data.serviceId].name : "Dental appointment";
       document.getElementById("summarySlot").textContent = new Date(data.date + "T12:00:00").toLocaleDateString("en-IN", { dateStyle: "long" }) + " at " + formatTime(data.time);
       goToStep(2);
     });
 
     document.getElementById("backButton").addEventListener("click", function () { goToStep(1); });
+
+    document.getElementById("waitlistButton").addEventListener("click", async function () {
+      const data = collectData();
+      if (!data.name || !data.email || !data.phone || !data.date || !data.serviceId) {
+        showNotice("Enter your contact details, service and preferred date before joining the waitlist.", "warning");
+        return;
+      }
+      setLoading(this, true, "Joining waitlist…");
+      try {
+        await window.firebaseBackend.joinWaitlist(data);
+        showNotice("You are on the cancellation waitlist. We will email you if a time becomes available.", "success");
+      } catch (error) {
+        showNotice(error.message || "Could not join the waitlist.", "error");
+      } finally { setLoading(this, false); }
+    });
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();

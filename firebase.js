@@ -44,11 +44,28 @@
 	window.firebaseBackend = {
 		isConfigured: !!(database || functions),
 
+		getBookingCatalog: function () {
+			return callFunction("getBookingCatalog", {});
+		},
+
 		getUnavailableSlots: function (date) {
 			return callFunction("getUnavailableSlots", { date: date }).then(function (result) {
 				return result.slots || [];
 			});
 		},
+
+		joinWaitlist: function (data) {
+			return callFunction("joinWaitlist", data);
+		},
+
+		getManagedAppointment: function (data) { return callFunction("getManagedAppointment", data); },
+		manageAppointment: function (data) { return callFunction("manageAppointment", data); },
+		saveMedicalIntake: function (data) { return callFunction("saveMedicalIntake", data); },
+		patientListAppointments: function () { return callFunction("patientListAppointments", {}); },
+		adminListAppointments: function () { return callFunction("adminListAppointments", {}); },
+		adminGetMedicalIntake: function (data) { return callFunction("adminGetMedicalIntake", data); },
+		adminUpdateAppointment: function (data) { return callFunction("adminUpdateAppointment", data); },
+		adminBlockSlot: function (data) { return callFunction("adminBlockSlot", data); },
 
 		createAppointmentPayment: function (data) {
 			return callFunction("createAppointmentPayment", data);
