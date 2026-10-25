@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshMart Grocery — Order Groceries Online</title>
+<meta name="description" content="Order fresh vegetables, fruits, rice, dal, spices and daily essentials from home. Prices per 1 kg. Home delivery from ₹35.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">🛒</div>
+    <div class="shop-id">
+      <h1 id="shopName">FreshMart Grocery</h1>
+      <p id="shopTagline">Fresh groceries, delivered to your home</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn ghost small" id="callBtn" href="#">📞 <span class="hide-sm">Call Shop</span></a>
+      <a class="btn ghost small" href="admin.html" title="Only for the shop owner">🔐 <span class="hide-sm">Owner Login</span></a>
+      <button class="btn amber small" id="openCartBtn" type="button">🧺 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h2>Order your daily groceries from home 🏠</h2>
+    <p>All prices are shown for <strong>1 kg</strong> (or 1 L). Pick the quantity you need — 250 g, 500 g, 1 kg, 2 kg… — and the price adjusts automatically. Pay on delivery (Cash / UPI).</p>
+    <div class="pill-row">
+      <span class="pill">🚚 Delivery: <strong id="pillMin">₹35 within 1 km</strong></span>
+      <span class="pill">➕ Beyond that: <strong id="pillPerKm">+ ₹25 per km</strong></span>
+      <span class="pill">💵 Pay on delivery</span>
+      <span class="pill">🌿 Fresh stock daily</span>
+    </div>
+
+    <div class="location-card" id="locationCard">
+      <div class="loc-icon">📍</div>
+      <div class="loc-text">
+        <strong id="locTitle">Allow location access to calculate your delivery charge</strong>
+        <span id="locDetail">We measure the distance from our shop to your home. ₹35 up to 1 km, then ₹25 per extra km.</span>
+      </div>
+      <button class="btn primary" id="detectBtnTop" type="button">📍 Detect My Location</button>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="controls">
+    <div class="searchbox">🔍 <input id="searchInput" type="search" placeholder="Search tomato, rice, dal, milk…" aria-label="Search items"></div>
+    <div class="chips" id="categoryChips"></div>
+  </div>
+
+  <div class="grid" id="productGrid"></div>
+  <p class="empty-note hidden" id="emptyNote">No items match your search. Try another name or category.</p>
+
+  <section class="info-section">
+    <h2>How ordering &amp; delivery works</h2>
+    <div class="info-grid">
+      <div class="info-box">
+        <div class="ic">🛍️</div>
+        <h3>1. Add items to cart</h3>
+        <p>Choose the quantity for each item. Prices are per 1 kg / 1 L and scale with quantity — e.g. 500 g of a ₹40/kg item costs ₹20.</p>
+      </div>
+      <div class="info-box">
+        <div class="ic">📍</div>
+        <h3>2. Share your location</h3>
+        <p>Tap “Detect My Location” and allow access. We calculate the distance from the shop to your home to fix the delivery charge before you order.</p>
+      </div>
+      <div class="info-box">
+        <div class="ic">🚚</div>
+        <h3>3. Delivery charge</h3>
+        <p><strong>₹35 minimum</strong> for up to 1 km. After 1 km, <strong>₹25 is added per km</strong> based on your distance.</p>
+        <table class="rates">
+          <tr><th>Distance from shop</th><th>Delivery charge</th></tr>
+          <tr><td>0.5 km</td><td>₹35</td></tr>
+          <tr><td>1 km</td><td>₹35</td></tr>
+          <tr><td>2 km</td><td>₹60</td></tr>
+          <tr><td>3 km</td><td>₹85</td></tr>
+          <tr><td>5 km</td><td>₹135</td></tr>
+        </table>
+      </div>
+      <div class="info-box">
+        <div class="ic">💵</div>
+        <h3>4. Pay on delivery</h3>
+        <p>Place your order, send it to us on WhatsApp in one tap, and pay by cash or UPI when your groceries arrive at your door.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p><strong id="footShopName">FreshMart Grocery</strong> • <span id="footAddress">Main Road, Mysuru, Karnataka</span></p>
+    <p>📞 <a href="#" id="footPhone">+91 99999 99999</a> &nbsp;|&nbsp; Open daily 7:00 AM – 9:30 PM &nbsp;|&nbsp; Prices shown per 1 kg / 1 L</p>
+    <p style="opacity:.75;margin-top:6px;">Shop owner? <a href="admin.html">Login to the Owner Panel</a> to update prices. Only the owner can change prices.</p>
+  </div>
+</footer>
+
+<!-- sticky cart bar -->
+<div class="cartbar" id="cartBar">
+  <div class="cb-info">
+    <strong id="cartBarTotal">₹0</strong>
+    <span id="cartBarMeta">0 items • delivery extra</span>
+  </div>
+  <button class="btn amber" id="openCartBtn2" type="button">View Cart &amp; Order →</button>
+</div>
+
+<!-- cart + checkout sheet -->
+<div class="overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-label="Cart and checkout">
+  <div class="sheet">
+    <div id="cartView">
+      <div class="sheet-head">
+        <h2>🧺 Your Cart</h2>
+        <button class="icon-btn" id="closeCartBtn" type="button" aria-label="Close cart">✕</button>
+      </div>
+      <div id="cartLines"></div>
+      <p class="empty-note hidden" id="cartEmpty">Your cart is empty. Add some fresh items! 🥦</p>
+
+      <div class="bill" id="billBox">
+        <div class="bill-row"><span>Items total</span><span id="billItems">₹0</span></div>
+        <div class="bill-row"><span>Delivery charge</span><span id="billDelivery">—</span></div>
+        <p class="breakdown" id="billBreakdown">Detect your location below to calculate the delivery charge.</p>
+        <div class="bill-row total"><span>Grand Total</span><span id="billTotal">₹0</span></div>
+      </div>
+
+      <form class="checkout" id="checkoutForm" novalidate>
+        <h3>📍 Your delivery location</h3>
+        <div class="loc-box">
+          <div class="row">
+            <button class="btn primary small" id="detectBtn" type="button">📍 Detect My Location</button>
+            <button class="btn small" id="manualToggle" type="button">Enter distance manually</button>
+          </div>
+          <p class="loc-status" id="locStatus">Location not detected yet. Delivery is ₹35 within 1 km, then +₹25 per extra km.</p>
+          <div class="manual-dist" id="manualDistBox">
+            <div class="field">
+              <label for="manualKm">Approx. distance from the shop (km)</label>
+              <input id="manualKm" type="number" min="0" step="0.1" placeholder="e.g. 1.5">
+              <p class="hint">Only if location detection doesn't work. The shop may confirm the distance on call.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3>🧾 Delivery details</h3>
+        <div class="field">
+          <label for="custName">Your name *</label>
+          <input id="custName" type="text" autocomplete="name" placeholder="e.g. Ramesh Kumar">
+          <p class="error" id="errName">Please enter your name.</p>
+        </div>
+        <div class="field">
+          <label for="custPhone">Mobile number (10 digits) *</label>
+          <input id="custPhone" type="tel" autocomplete="tel" inputmode="numeric" maxlength="10" placeholder="e.g. 9876543210">
+          <p class="error" id="errPhone">Please enter a valid 10-digit mobile number.</p>
+        </div>
+        <div class="field">
+          <label for="custAddress">Full address *</label>
+          <textarea id="custAddress" autocomplete="street-address" placeholder="House no., street, area, city, PIN code"></textarea>
+          <p class="error" id="errAddress">Please enter your delivery address.</p>
+        </div>
+        <div class="field">
+          <label for="custNote">Note for the shop (optional)</label>
+          <input id="custNote" type="text" placeholder="e.g. Near bus stop, call on arrival">
+        </div>
+        <p class="error" id="errGeneral" style="font-size:.92rem;"></p>
+        <button class="btn primary place-btn" type="submit">✅ Place Order • Pay on Delivery</button>
+        <p class="hint" style="text-align:center;color:var(--muted);font-size:.85rem;">By ordering you agree to pay the grand total (items + delivery) on delivery.</p>
+      </form>
+    </div>
+
+    <div id="successView" class="hidden">
+      <div class="success-box">
+        <div class="big">🎉</div>
+        <h2>Order placed successfully!</h2>
+        <div class="order-id" id="successOrderId">ORD-000000</div>
+        <p id="successSummary"></p>
+        <p style="color:var(--muted);font-size:.92rem;">Tap below to send your order to the shop on WhatsApp so they can start packing right away. Keep cash / UPI ready for payment on delivery.</p>
+        <div class="success-actions">
+          <a class="btn whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener">💬 Send Order to Shop on WhatsApp</a>
+          <a class="btn" id="callShopBtn2" href="#">📞 Call the Shop</a>
+          <button class="btn primary" id="continueBtn" type="button">Continue Shopping</button>
+        </div>
+      </div>
+      <div class="bill" id="successBill" style="margin-top:16px;text-align:left;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/products.js"></script>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Panel — FreshMart Grocery</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">🔐</div>
+    <div class="shop-id">
+      <h1 id="adminShopName">Owner Panel</h1>
+      <p>Only the shop owner can change prices here</p>
+    </div>
+    <div class="topbar-actions">
+      <a class="btn ghost small" href="index.html">🛒 View Shop</a>
+      <button class="btn amber small hidden" id="logoutBtn" type="button">Logout</button>
+    </div>
+  </div>
+</header>
+
+<main class="admin-wrap">
+
+  <!-- ============ LOGIN ============ -->
+  <section class="panel login-card" id="loginPanel">
+    <span class="big">🧑‍💼</span>
+    <h2 style="text-align:center;">Owner Login</h2>
+    <p class="desc" style="text-align:center;">Enter the owner password to manage item prices, shop location and delivery charges.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="ownerPassword">Owner password</label>
+        <input id="ownerPassword" type="password" autocomplete="current-password" placeholder="Enter password">
+        <p class="hint">First time? Default password is <strong>admin123</strong> — change it below after logging in (Shop Settings).</p>
+        <p class="error" id="loginError">Wrong password. Please try again.</p>
+      </div>
+      <button class="btn primary place-btn" type="submit">🔓 Login as Owner</button>
+    </form>
+    <p style="text-align:center;margin-top:12px;"><a href="index.html">← Back to shop</a></p>
+  </section>
+
+  <!-- ============ OWNER DASHBOARD ============ -->
+  <div id="dashboard" class="hidden">
+
+    <div class="note-warn">
+      💡 <strong>How prices work:</strong> every price below is for <strong>1 kg / 1 L</strong>. Customers pick a quantity
+      (250 g, 500 g, 1 kg…) and pay proportionally — you only ever maintain the 1 kg rate.
+      Changes you save here appear in the shop instantly (on this device/browser).
+      See the README for syncing prices to all customer phones via Firebase.
+    </div>
+
+    <!-- prices -->
+    <section class="panel">
+      <h2>💲 Item Prices (per 1 kg / 1 L)</h2>
+      <p class="desc">Edit a price and press <strong>Save All Prices</strong>. Use the stock toggle to hide an item's “Add to Cart” button when it runs out.</p>
+      <div class="toolbar">
+        <div class="searchbox">🔍 <input id="adminSearch" type="search" placeholder="Search items…" aria-label="Search items"></div>
+        <button class="btn primary" id="savePricesBtn" type="button">💾 Save All Prices</button>
+        <button class="btn danger" id="resetCatalogBtn" type="button">↩️ Reset to Default List</button>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Item</th><th>Category</th><th>Price ₹ / 1 kg·L</th><th>In Stock</th><th></th></tr>
+          </thead>
+          <tbody id="priceTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- add item -->
+    <section class="panel">
+      <h2>➕ Add a New Item</h2>
+      <p class="desc">New stock in the shop? Add it here with its 1 kg / 1 L price.</p>
+      <form id="addItemForm">
+        <div class="form-grid">
+          <div class="field"><label for="newName">Item name *</label><input id="newName" type="text" placeholder="e.g. Drumstick"></div>
+          <div class="field"><label for="newCategory">Category</label><select id="newCategory"></select></div>
+          <div class="field"><label for="newPrice">Price ₹ per 1 kg / 1 L *</label><input id="newPrice" type="number" min="0" step="0.5" placeholder="e.g. 55"></div>
+          <div class="field"><label for="newUnit">Unit</label>
+            <select id="newUnit"><option value="kg">kg</option><option value="L">L (litre)</option></select>
+          </div>
+          <div class="field"><label for="newEmoji">Emoji icon</label><input id="newEmoji" type="text" maxlength="4" placeholder="🥒"></div>
+        </div>
+        <button class="btn primary" style="margin-top:12px;" type="submit">➕ Add Item to Shop</button>
+      </form>
+
+      <h2 style="margin-top:22px;">📦 Backup / Move Catalogue</h2>
+      <p class="desc">Download your price list as a file, or import one (e.g. to copy prices from your phone to a computer).</p>
+      <div class="toolbar">
+        <button class="btn" id="exportBtn" type="button">⬇️ Export Prices (JSON)</button>
+        <label class="btn" for="importFile" style="cursor:pointer;">⬆️ Import Prices<input id="importFile" type="file" accept="application/json" class="hidden"></label>
+      </div>
+    </section>
+
+    <!-- settings -->
+    <section class="panel">
+      <h2>⚙️ Shop Settings, Location &amp; Delivery Charges</h2>
+      <p class="desc">The shop's GPS location is used to measure each customer's distance:
+        <strong>₹35 up to 1 km, then +₹25 per extra km</strong> (you can change these rates).</p>
+      <form id="settingsForm">
+        <div class="form-grid">
+          <div class="field"><label for="setShopName">Shop name</label><input id="setShopName" type="text"></div>
+          <div class="field"><label for="setTagline">Tagline</label><input id="setTagline" type="text"></div>
+          <div class="field"><label for="setPhoneDisplay">Phone (display)</label><input id="setPhoneDisplay" type="text" placeholder="+91 98XXX XXXXX"></div>
+          <div class="field"><label for="setWhatsapp">WhatsApp number (with 91)</label><input id="setWhatsapp" type="text" inputmode="numeric" placeholder="91XXXXXXXXXX">
+            <p class="hint">Customer orders are sent to this number on WhatsApp.</p></div>
+          <div class="field"><label for="setAddress">Shop address</label><input id="setAddress" type="text"></div>
+        </div>
+
+        <h3 class="section-title" style="color:var(--green-dark);margin:16px 0 8px;">📍 Shop GPS location</h3>
+        <div class="form-grid">
+          <div class="field"><label for="setLat">Latitude</label><input id="setLat" type="number" step="any" placeholder="12.2958"></div>
+          <div class="field"><label for="setLng">Longitude</label><input id="setLng" type="number" step="any" placeholder="76.6394"></div>
+        </div>
+        <div class="toolbar" style="margin-top:10px;">
+          <button class="btn" id="useMyLocationBtn" type="button">📍 Use My Current Location as Shop Location</button>
+          <span class="hint" style="font-size:.85rem;color:var(--muted);">Do this while standing inside your shop. Or: open Google Maps → long-press your shop → copy the coordinates.</span>
+        </div>
+        <p class="loc-status" id="shopLocStatus"></p>
+
+        <h3 class="section-title" style="color:var(--green-dark);margin:16px 0 8px;">🚚 Delivery charge rates</h3>
+        <div class="form-grid">
+          <div class="field"><label for="setMinCharge">Minimum charge ₹ (first km)</label><input id="setMinCharge" type="number" min="0" step="1"></div>
+          <div class="field"><label for="setIncludedKm">Km included in minimum</label><input id="setIncludedKm" type="number" min="0" step="0.5"></div>
+          <div class="field"><label for="setPerKm">Rate ₹ per extra km</label><input id="setPerKm" type="number" min="0" step="1"></div>
+        </div>
+        <p class="hint" id="ratePreview" style="font-size:.9rem;color:var(--muted);margin-top:8px;"></p>
+
+        <h3 class="section-title" style="color:var(--green-dark);margin:16px 0 8px;">🔑 Change owner password</h3>
+        <div class="form-grid">
+          <div class="field"><label for="newPassword">New password (leave blank to keep current)</label><input id="newPassword" type="password" autocomplete="new-password" placeholder="Min. 6 characters"></div>
+        </div>
+
+        <button class="btn primary place-btn" style="margin-top:16px;" type="submit">💾 Save Settings</button>
+      </form>
+    </section>
+
+    <!-- orders -->
+    <section class="panel">
+      <h2>🧾 Orders Received <span style="font-size:.85rem;color:var(--muted);">(on this device)</span></h2>
+      <p class="desc">Orders placed on this device/browser appear here. In real use, customers also send you the order on WhatsApp. For orders from all phones in one place, connect Firebase later (see README).</p>
+      <div class="toolbar">
+        <button class="btn small" id="refreshOrdersBtn" type="button">🔄 Refresh</button>
+        <button class="btn small danger" id="clearDeliveredBtn" type="button">🧹 Clear Delivered Orders</button>
+      </div>
+      <div id="ordersList"></div>
+      <p class="empty-note hidden" id="noOrders">No orders yet on this device.</p>
+    </section>
+
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/products.js"></script>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
